@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	
+	<div id="app">
+		<div v-if='menuVisible' class="menu">
+			<div class="login">
+				Hello, tasks
+			</div>
+			<div class="navigation">
+				<div v-on:click='showTaskProcess();' class="nav-item">В процессе</div>
+				<div v-on:click='showTasksComplete();' class="nav-item">Выполнено</div>
+				<div v-on:click='showCategories();' class="nav-item">Категории</div>
+			</div>
+		</div>
+		<div v-if='loginVisible' class="autorizationWrap">
+				<div class="autorization_form">
+					<div class="autorization_text">
+						<h1><span>Hello</span>, tasks</h1>
+						<p>Корманный менеджер для ваших задач</p>
+					</div>
+					<div class="autorization">
+						<input type="text"  placeholder="Введите логин">
+						<input type="password" placeholder="Введите пароль">
+						<button v-on:click.prevent='showTaskProcess();' class="btn">Зарегестрироваться</button>
+					</div>
+				</div>
+			</div>
+
+		<div class="appWrap">		
+			<div v-if = "processVisible" class="processWrap" >
+				<div class="taskWrapper" v-for = 'task in processTasks'>
+					<div class="leftImageWrapper">
+						<div class="leftImage">
+							
+						</div>
+					</div>
+					<div class="rightTaskTextWrap">
+						<div class="rightTaskText">
+
+							<span class="headerTask">{{task.name}}</span>
+							<span class="categoryTask">{{task.description}}</span>
+							<div class="buttons">
+								<button v-on:click.prevent='showAboutTask(task.id, task.name, task.description, task.category ,task.status, task.deadline);' class="btn2">Подробнее</button>
+								<button v-on:click.prevent='addCompleteTask(task.id);' class="btn2">Сделал</button>
+							</div>
+							
+						</div>
+					</div>			
+				</div>
+
+				<button v-on:click.prevent='showAddProcessTask();' class="addTaskBut">
+					Добавить таск
+				</button>
+			</div>
+
+			<div class="taskAdd" v-if='addTaskVisible'>
+				<span>Добавить name</span>
+				<input v-model='newTask.name' type="text" placeholder='nametask'>
+				<span>Добавить descripton</span>
+				<textarea v-model='newTask.description' name="description" id="">Описание</textarea>
+
+				<button v-on:click.prevent='addProcessTask();' class="btn">Добавить</button>
+			</div>
+
+			<div v-if='completeVisible' class="completeWrap processWrap">
+				<div class="taskWrapper" v-for="task in completeTasks">
+					<div class="leftImageWrapper">
+						<div class="leftImage">
+							
+						</div>
+					</div>
+					<div class="rightTaskTextWrap">
+						<div class="rightTaskText">
+							<span class="headerTask">{{task.name}}</span>
+							<span class="categoryTask">Процент выполнения: {{task.status}}</span>
+							<div class="wrap-btn">
+								<button v-on:click.prevent='showAboutTask(task.id, task.name, task.description, task.category ,task.status, task.deadline);' class="btn2">Подробнее</button>
+								<button class="btn2 btn2-red" v-on:click.prevent='deleteTask(task.id);'>Удалить</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div v-if='categoriesVisible' class="categoriesWrap processWrap">
+				<div v-for = "cat in categories" class="taskWrapper" >
+					<span>{{cat.name}}</span>
+				</div>
+				<div v-on:click.prevent = 'showCategory();' class="taskWrapper addTaskWrapper"><span>Добавить категорию</span></div>
+			</div>
+
+			<div v-if = 'aboutTaskVisible' class="aboutTask">
+				<div class="aboutTaskWrapper" v-for='task in aboutTaskMass'>
+					<div class="warpperImage">
+						<div class="leftImage"></div>
+					</div>
+					<div class="aboutTask">
+						<span id="catName">{{task.name}}</span>
+						<span id="decription">{{task.description}}</span>
+						<span id="categories">{{task.categories}}</span>
+						<span id="status">{{task.status}}</span>
+						<span id="deadline">{{task.deadline}}</span>
+					</div>
+				</div>
+			</div>
+
+			<div v-if = 'showAddCategory' class="addCat">
+				<input v-model = 'newCategory.name' type="text" placeholder="Название категории">
+				<button v-on:click.prevent = "addCategory();" class="btn">Добавить</button>
+			</div>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>
